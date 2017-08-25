@@ -1,6 +1,6 @@
 # app
 
-> A Vue.js project
+> 纪念我第一个死去的vue项目 这个公司太不专业了 不知道怎么签的合同
 
 ## Build Setup
 

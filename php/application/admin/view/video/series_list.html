@@ -1,0 +1,141 @@
+{extend name="inc/template"/}
+{block name="ccss"} <link rel="stylesheet" href="__PUBLIC__/admin/lib/bootstrap/css/bootstrap.css" media="all">{/block}
+{block name="inbody"}
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <xblock><button class="layui-btn layui-btn-danger"  onclick="delAll(this,'{:url('video/series_delall')}')">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="about_add('添加','{:url('video/series_add')}','700','500')"><i class="layui-icon">&#xe608;</i>添加</button></xblock>
+    <table class="layui-table">
+        <thead>
+        <tr >
+            <th>
+                <input type="checkbox" id="dellAll" value="">
+            </th>
+            <th>
+                ID
+            </th>
+            <th>
+                视频系列名称
+            </th>
+            <th>
+                状态
+            </th>
+            <th>
+                操作
+            </th>
+        </tr>
+        </thead>
+        {empty name="class"}
+        <tr>
+            <td colspan="5" align="center">暂无数据</td>
+        </tr>
+        {else/}
+        {volist name="class" id="v"}
+        <tbody>
+        <tr>
+            <td>
+                <input type="checkbox" value="{$v.id}" name="delAll">
+            </td>
+            <td>
+                {$v.id}
+            </td>
+            <td>
+                {$v.sname}
+            </td>
+            <td class="td-status">
+                {empty name="v.status"}
+                <span class="layui-btn layui-btn-disabled layui-btn-mini">
+                             不显示
+                            </span>
+                {else/}
+                <span class="layui-btn layui-btn-normal layui-btn-mini">
+                             显示
+                            </span>
+                {/empty}
+            </td>
+            <td class="td-manage">
+                <a title="编辑"  href="javascript:;" onclick="about_edit('编辑--{$v.sname}','{:url('video/series_edit',['id'=>$v['id']])}')"
+                   class="ml-5" style="text-decoration:none">
+                    <i class="layui-icon">&#xe642;</i>
+                </a>
+                <a title="删除"   href="javascript:;" onclick="admin_del(this,{$v.id},'{:url('video/seriesdel')}')" style="text-decoration:none">
+                    <i class="layui-icon">&#xe640;</i>
+
+                </a>
+            </td>
+        </tr>
+        </tbody>
+        {/volist}
+        {/empty}
+    </table>
+    <div class="larry-table-page clearfix">
+        {$page}
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+<script src="__PUBLIC__/admin/js/x-layui.js" charset="utf-8"></script>
+<script  src="__PUBLIC__/admin/js/script.js" charset="UTF-8"></script>
+
+<script>
+
+
+    /*用户-添加*/
+    function about_add(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+
+
+    // 用户-编辑
+    function about_edit (title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
+    }
+
+    /*用户-删除*/
+    /*删除*/
+
+    function admin_del(obj,id,action){
+        layer.confirm('确认要删除吗？',function(index){
+            //发异步删除数据
+            var data='id='+id;
+            var result=jsw_post(action,data);
+            if(result.error){
+                layer.msg(result.info,{icon:1,time:800},function(){
+                    location.reload();
+                });
+            }else{
+                layer.msg(result.info,{icon:2,time:800},function(){
+                    location.reload();
+                });
+            }
+
+
+        });
+    }
+
+    //批量删除提交
+    function delAll (obj,action) {
+        layer.confirm('确认要删除吗？',function(index){
+            var checkbox = $("input[type='checkbox'][name='delAll']");
+            var str = [];
+            $.each(checkbox, function(i, n){
+                if(checkbox[i].checked == true){
+                    str[i] = {name:'ids[]',value:checkbox[i].value};
+                }
+            });
+            //str.join() 分割成 字符串
+            var result =  jsw_post(action,str);
+            if (result.error){
+                //发异步把用户状态进行更改
+                layer.msg(result.info,{icon: 6,time:1000},function(){
+                    window.location.reload();
+                });
+            }else{
+                layer.msg(result.info,{icon: 5,time:1000});
+            }
+        });
+    }
+</script>
+{/block}

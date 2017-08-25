@@ -1,0 +1,144 @@
+{extend name="inc/template"/}
+{block name="inbody"}
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"  href="javascript:location.replace(location.href);" title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">网站Banner配置</li>
+        </ul>
+        <div class="layui-tab-content" >
+            <div class="layui-tab-item layui-show">
+
+
+                <table class="layui-table">
+                    <thead>
+                    <tr >
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            照片
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                    </thead>
+                    {empty name="db"}
+                    <tr>
+                        <td colspan="4" align="center">暂无数据</td>
+                    </tr>
+                    {else/}
+                    {volist name="db" id="v"}
+                    <tbody>
+                    <tr>
+                        <td>
+                            {$v.id}
+                        </td>
+                        <td>
+                            <img src="{$v.bannerurl}" width="80">
+                        </td>
+                        <td class="td-manage">
+                            <a title="编辑"  href="javascript:;" onclick="about_edit('编辑--{$v.id}','{:url('banner/banner_edit',['id'=>$v['id']])}')"
+                               class="ml-5" style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    {/volist}
+                    {/empty}
+                </table>
+
+                <div class="larry-table-page clearfix">
+
+                </div>
+
+
+
+
+
+                <div style="height:100px;"></div>
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+<script src="__PUBLIC__/admin/js/x-layui.js" charset="utf-8"></script>
+<script src="__PUBLIC__/admin/js/script.js" charset="UTF-8"></script>
+<script>
+    layui.use(['laydate','element','laypage','layer','form','upload'], function(){
+        $ = layui.jquery;
+        laydate = layui.laydate;//日期插件
+        lement = layui.element();//面包导航
+        laypage = layui.laypage;//分页
+        layer = layui.layer;//弹出层
+        form = layui.form();
+        var form = layui.form()
+            ,layer = layui.layer;
+
+
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            var action =$('.layui-form').attr('action');
+            var result = jsw_post(action,data.field);
+            if(result.error){
+                layer.alert(result.info,{icon:1,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }else{
+                layer.alert(result.info,{icon:2,skin:'layer-ext-moon'});
+
+            }
+            return false;
+        });
+
+
+
+    });
+
+
+
+
+
+
+    // 用户-编辑
+    function about_edit (title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
+    }
+
+    /*用户-删除*/
+    /*删除*/
+
+    function admin_del(obj,id,action){
+        layer.confirm('确认要删除吗？',function(index){
+            //发异步删除数据
+            var data='id='+id;
+            var result=jsw_post(action,data);
+            if(result.error){
+                layer.msg(result.info,{icon:1,time:800},function(){
+                    location.reload();
+                });
+            }else{
+                layer.msg(result.info,{icon:2,time:800},function(){
+                    location.reload();
+                });
+            }
+
+
+        });
+    }
+</script>
+{/block}

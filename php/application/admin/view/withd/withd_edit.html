@@ -1,0 +1,76 @@
+{extend name="inc/template"/}
+{block name="inbody"}
+<div class="x-body">
+    <form class="layui-form" action="" method="post">
+        <input type="hidden" name="id" value="{$res.id}">
+        <div class="layui-form-item">
+            <label for="L_username" class="layui-form-label">
+                提现状态
+            </label>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="radio" name="status" value="1" title="已提现" {notempty name="res.status"}checked{/notempty}>
+                    <input type="radio" name="status" value="0" title="未提现" {empty name="res.status"}checked{/empty}>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button  class="layui-btn" lay-filter="save" lay-submit="">
+                保存
+            </button>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/admin/lib/layui/layui.js" charset="utf-8">
+</script>
+<script src="__PUBLIC__/admin/js/x-layui.js" charset="utf-8">
+</script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/script.js" charset="UTF-8"></script>
+<script>
+    layui.use(['form','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form()
+            ,layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            nikename: function(value){
+                if(value.length < 5){
+                    return '昵称至少得5个字符啊';
+                }
+            }
+            ,pass: [/(.+){6,12}$/, '密码必须6到16位']
+            ,repass: function(value){
+                if($('#L_pass').val()!=$('#L_repass').val()){
+                    return '两次密码不一致';
+                }
+            }
+        });
+
+        //监听提交
+        form.on('submit(save)', function(data){
+            console.log(data);
+            var action =$('.layui-form').attr('action');
+            var result = jsw_post(action,data.field);
+            if(result.error){
+                layer.alert(result.info,{icon:1,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }else{
+                layer.alert(result.info,{icon:2,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }
+            return false;
+        });
+
+
+    });
+</script>
+{/block}

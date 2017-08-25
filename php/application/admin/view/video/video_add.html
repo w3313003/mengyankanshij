@@ -1,0 +1,175 @@
+{extend name="inc/template"/}
+{block name="inbody"}
+<div class="x-body">
+    <form class="layui-form" method="post" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">视频所属分类</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="classid">
+                    {empty name="class"}
+                    <option value="0">暂无数据</option>
+                    {else/}
+                    <option value="0">请选择分类</option>
+                    {volist name="class" id="v"}
+                    <option value="{$v.name}">{$v.name}</option>
+                    {/volist}
+                    {/empty}
+                </select>
+            </div>
+        </div>
+
+         <div class="layui-form-item">
+            <label class="layui-form-label">视频所属系列</label>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="sname">
+                    {empty name="sarr"}
+                    <option value="0">暂无数据</option>
+                    {else/}
+                    <option value="0">请选择系列</option>
+                    {volist name="sarr" id="v"}
+                    <option value="{$v.sname}">{$v.sname}</option>
+                    {/volist}
+                    {/empty}
+                </select>
+            </div>
+        </div>
+            <div class="layui-form-item">
+            <label class="layui-form-label">系列视频价格设置</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="pack" name="pack" value=""  class="layui-input">
+                </div>
+                <span class="x-red">所属系列付费打包视频必填价格，免费视频则可不填</span>
+        </div>
+                <div class="layui-form-item">
+            <label class="layui-form-label">单个视频价格</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="single" name="single" value="" class="layui-input">
+                </div>
+                <span class="x-red">所属系列付费单个视频必填价格，免费视频则可不填</span>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">视频名</label>
+
+                <div class="layui-input-inline">
+                    <input type="text" id="title" name="title" value="" required="" lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label for="content" class="layui-form-label">
+                <span class="x-red">*</span>视频外链地址
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="url" name="url" value="" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+                <span class="x-red">请填写完整的外链地址</span>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">视频缩略图</label>
+            <div class="layui-input-block">
+                <input type="file" name="file" class="layui-upload-file">
+                <input type="hidden" id="pic" name="pic" value="">
+                 <span class="x-red">图片分辨率必须为280*200的倍数</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">
+                状态
+            </label>
+            <div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="radio" name="type" value="1" title="付费视频" {notempty name="res.type"}checked{/notempty}>
+                    <input type="radio" name="type" value="0" title="免费视频" {empty name="res.type"}checked{/empty}>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item" >
+            <label for="content" class="layui-form-label">
+                <span class="x-red">*</span>视频简介
+            </label>
+            <div class="layui-input-block">
+                <textarea name="content"  id="content"  style="width:100%;height:200px;" overflow-y="scroll" required="" lay-verify="required"></textarea>
+            </div>
+        </div>
+
+        <button  class="layui-btn" lay-filter="add" lay-submit="">
+            添加
+        </button>
+
+    </form>
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/admin/js/x-layui.js" charset="utf-8" ></script>
+<script src="__PUBLIC__/admin/js/script.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/admin/Ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/admin/Ueditor/ueditor.all.min.js"> </script>
+<script>
+    var ue = UE.getEditor('content',{
+        //  serverUrl :"/xyhai.php?s=/Public/editorMethod"
+    });
+
+    layui.use(['laydate','element','laypage','layer','form','upload'], function(){
+        $ = layui.jquery;
+        laydate = layui.laydate;//日期插件
+        lement = layui.element();//面包导航
+        laypage = layui.laypage;//分页
+        layer = layui.layer;//弹出层
+        form = layui.form();
+        var form = layui.form()
+            ,layer = layui.layer;
+
+
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            var action =$('.layui-form').attr('action');
+            var result = jsw_post(action,data.field);
+            if(result.error){
+                layer.alert(result.info,{icon:1,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }else{
+                layer.alert(result.info,{icon:2,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }
+            return false;
+        });
+
+        var load = '';
+        layui.upload({
+            url: "{:url('Banner/uploads')}",
+            ext: 'jpg|png|gif|jpeg',
+            before: function(input){
+                // layer.msg('上传中.....');
+                load = layer.load(1, {
+                    shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+            success: function(result, input){
+                layer.close(load);
+                if (result.error){
+                    var parent = $(input).parents('.layui-input-block');
+                    parent.find('input[type=hidden]').val(result.file);
+                    if(parent.find('.img').length <= 0){
+                        parent.append('<img class="img" src="'+result.file+'" width="100" />');
+                    }else{
+                        parent.find('.img')[0].src = result.file;
+                    }
+                    layer.alert(result.info,{icon:1, skin:'layer-ext-moon' });
+                }else{
+                    layer.alert(result.info,{icon:2, skin:'layer-ext-moon' });
+                }
+            }
+        });
+
+
+    });
+</script>
+{/block}

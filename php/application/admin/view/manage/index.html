@@ -1,0 +1,172 @@
+{extend name="inc/template"/}
+{block name="inbody"}
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header header header-demo">
+        <div class="layui-main">
+            <a class="logo" href="">
+                后台管理
+            </a>
+            <ul class="layui-nav" lay-filter="">
+                <li class="layui-nav-item"></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">{:session('userinfo.username')}</a>
+                    <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                        <dd><a href="{:url('index/loginout')}">退出</a></dd>
+                    </dl>
+                </li>
+                <!-- <li class="layui-nav-item">
+                  <a href="" title="消息">
+                      <i class="layui-icon" style="top: 1px;">&#xe63a;</i>
+                  </a>
+                  </li> -->
+                <li class="layui-nav-item x-index"><a href="/">前台首页</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-side layui-bg-black x-side">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree site-demo-nav" lay-filter="side">
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe612;</i><cite>管理员</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('manage/set_admin')}">
+                                <cite>管理员列表</cite>
+                            </a>
+                        </dd>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe634;</i><cite>轮播图管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('banner/banner_list')}">
+                                <cite>轮播图列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe6ed;</i><cite>视频管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('video/videoclass_list')}">
+                                <cite>视频所属分类</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                       <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('video/series_list')}">
+                                <cite>视频所属系列</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('video/video_list')}">
+                                <cite>视频列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('barrage/barrage_list')}">
+                                <cite>视频弹幕提示设置</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                 <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe613;</i><cite>会员管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('member/member_list')}">
+                                <cite>会员列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe614;</i><cite>返现比例管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('rebate/rebate_list')}">
+                                <cite>返现比例列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe614;</i><cite>赠送金额管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('free/free_list')}">
+                                <cite>赠送金额列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe614;</i><cite>会员提现管理</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('withd/withd_list')}">
+                                <cite>会员提现列表</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a class="javascript:;" href="javascript:;">
+                        <i class="layui-icon" style="top: 3px;">&#xe606;</i><cite>客服</cite>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd class="">
+                            <a href="javascript:;" _href="{:url('service/service_list')}">
+                                <cite>客服配置</cite>
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="layui-tab layui-tab-card site-demo-title x-main" lay-filter="x-tab" lay-allowclose="true">
+        <div class="x-slide_left"></div>
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                我的桌面
+                <i class="layui-icon layui-unselect layui-tab-close">ဆ</i>
+            </li>
+        </ul>
+        <div class="layui-tab-content site-demo site-demo-body">
+            <div class="layui-tab-item layui-show">
+                <iframe frameborder="0" src="" class="x-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="site-mobile-shade">
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/admin/js/x-admin.js"></script>
+{/block}

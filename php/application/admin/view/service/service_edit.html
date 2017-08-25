@@ -1,0 +1,94 @@
+{extend name="inc/template"/}
+{block name="inbody"}
+<div class="x-body">
+    <form class="layui-form" method="post" action="">
+        <input type="hidden" name="id" value="{$id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">二维码图</label>
+            <div class="layui-input-block">
+                <input type="file" name="file" class="layui-upload-file">
+                <input type="hidden" id="pic" name="pic" value="">
+                <span class="x-red">图片分辨率必须为640*300的倍数</span>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item uploadpic" style="display: none;">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+            </div>
+        </div>
+        <label for="info" class="layui-form-label">
+        </label>
+        <button  class="layui-btn" lay-filter="add" lay-submit="">
+            增加
+        </button>
+    </form>
+</div>
+{/block}
+{block name="script"}
+<script src="__PUBLIC__/admin/js/x-layui.js" charset="utf-8" ></script>
+<script src="__PUBLIC__/admin/js/script.js" charset="UTF-8"></script>
+<script>
+
+    layui.use(['laydate','element','laypage','layer','form','upload'], function(){
+        $ = layui.jquery;
+        laydate = layui.laydate;//日期插件
+        lement = layui.element();//面包导航
+        laypage = layui.laypage;//分页
+        layer = layui.layer;//弹出层
+        form = layui.form();
+        var form = layui.form()
+            ,layer = layui.layer;
+
+
+
+        //监听提交
+        form.on('submit(add)', function(data){
+            var action =$('.layui-form').attr('action');
+            var result = jsw_post(action,data.field);
+            if(result.error){
+                layer.alert(result.info,{icon:1,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }else{
+                layer.alert(result.info,{icon:2,skin:'layer-ext-moon'},function(){
+                    parent.location.reload();
+                });
+
+            }
+            return false;
+        });
+
+        var load = '';
+        layui.upload({
+            url: "{:url('service/uploads')}",
+            ext: 'jpg|png|gif|jpeg',
+            before: function(input){
+                // layer.msg('上传中.....');
+                load = layer.load(1, {
+                    shade: [0.1,'#fff'] //0.1透明度的白色背景
+                });
+            },
+            success: function(result, input){
+                layer.close(load);
+                if (result.error){
+                    var parent = $(input).parents('.layui-input-block');
+                    parent.find('input[type=hidden]').val(result.file);
+                    if(parent.find('.img').length <= 0){
+                        parent.append('<img class="img" src="'+result.file+'" width="100" />');
+                    }else{
+                        parent.find('.img')[0].src = result.file;
+                    }
+                    layer.alert(result.info,{icon:1, skin:'layer-ext-moon' });
+                }else{
+                    layer.alert(result.info,{icon:2, skin:'layer-ext-moon' });
+                }
+            }
+        });
+
+
+    });
+</script>
+{/block}

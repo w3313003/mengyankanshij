@@ -1,0 +1,197 @@
+{extend name="inc/template"/} {block name="ccss"}
+<link rel="stylesheet" href="__PUBLIC__/admin/lib/bootstrap/css/bootstrap.css"
+    media="all">{/block} {block name="inbody"}
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);"
+        title="刷新"><i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>
+                   我的邀请码
+                </th>
+                <th>
+                    手机号码
+                </th>
+                <th>
+                    会员昵称
+                </th>
+
+                <th>
+                    性别
+                </th>
+                <th>
+                    年龄
+                </th>
+                <th>
+                    收藏视频
+                </th>
+                <th>
+                    购买视频
+                </th>
+                <th style="color:#00a0e9">
+                    赠送金额
+                </th>
+                <th style="color: red">
+                    返利金额
+                </th>
+                <th style="color: #FF2775">
+                    充值金额
+                </th>
+                <th>
+                    注册时间
+                </th>
+                <th>
+                    状态
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {empty name="db"}
+            <tr>
+                <td colspan="12" align="center">会员为空！</td>
+            </tr>
+            {else /} {volist name="db" id="v"}
+            <tr>
+                <td>
+                    {$v.mycode}
+                </td>
+                <td>
+                    {$v.phone}
+                </td>
+                <td>
+                    {$v.username}
+                </td>
+                <td>
+                    {$v.sex}
+                </td>
+                <th>
+                    {$v.age}
+                </th>
+
+                <th>
+                    <a title="点击" href="{:url('member/member_eject',['id'=>$v['id']])}" class="ml-5" style="color:red;text-decoration:none;">查看
+                </a>
+                </th>
+                <th>
+                    <a title="点击" href="{:url('member/member_seject',['id'=>$v['id']])}" class="ml-5" style="color:red;text-decoration:none;">查看
+                </a>
+                </th>
+                <td style="color:#00a0e9">
+                    {$v.givefree}元
+                </td>
+                <td style="color: red">
+                    {$v.rebate}元
+                </td>
+                 <td style="color: #FF2775">
+                    {$v.picesum}元
+                </td>
+                <td>
+                    <?php echo date('Y/m/d H:i:s',$v['time']);?>
+                </td>
+                <td class="td-status">
+                    {empty name="v.status"}
+                    <span class="layui-btn layui-btn-disabled layui-btn-mini">
+                             禁用
+                            </span> {else/}
+                    <span class="layui-btn layui-btn-normal layui-btn-mini">
+                             正常
+                            </span> {/empty}
+                </td>
+                <td class="td-manage">
+                    <a title="编辑" href="javascript:;" onclick="admin_edit('编辑--{$v.username}','{:url('member/member_edit',['id'=>$v['id']])}')"
+                        class="ml-5" style="text-decoration:none">
+                    <i class="layui-icon">&#xe642;</i>
+                </a>
+                    <a title="删除" href="javascript:;" onclick="admin_del(this,{$v.id},'{:url('member/member_del')}')" style="text-decoration:none">
+                    <i class="layui-icon">&#xe640;</i>
+
+                </a>
+
+                </td>
+            </tr>
+            {/volist}
+            {/empty}
+        </tbody>
+    </table>
+    <div class="larry-table-page clearfix">
+        {$page}
+    </div>
+</div>
+{/block} {block name="script"}
+<script src="__PUBLIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+<script src="__PUBLIC__/admin/js/x-layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="__PUBLIC__/admin/js/script.js" charset="UTF-8"></script>
+<script>
+    layui.use(['laydate', 'element', 'laypage', 'layer'], function () {
+        $ = layui.jquery; //jquery
+        laydate = layui.laydate; //日期插件
+        lement = layui.element(); //面包导航
+        laypage = layui.laypage; //分页
+        layer = layui.layer; //弹出层
+
+        //以上模块根据需要引入
+
+
+
+
+
+
+
+    });
+
+    //批量删除提交
+    function delAll() {
+        layer.confirm('确认要删除吗？', function (index) {
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', {
+                icon: 1
+            });
+        });
+    }
+    /*添加*/
+    function admin_add(title, url, w, h) {
+        x_admin_show(title, url, w, h);
+    }
+
+
+
+
+    //编辑
+    function admin_edit(title, url, id, w, h) {
+        x_admin_show(title, url, w, h);
+    }
+    /*删除*/
+
+    function admin_del(obj, id, action) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            var data = 'id=' + id;
+            var result = jsw_post(action, data);
+            if (result.error) {
+                layer.msg(result.info, {
+                    icon: 1,
+                    time: 800
+                }, function () {
+                    location.reload();
+                });
+            } else {
+                layer.msg(result.info, {
+                    icon: 2,
+                    time: 800
+                }, function () {
+                    location.reload();
+                });
+            }
+
+
+        });
+    }
+</script>
+
+{/block}

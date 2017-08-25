@@ -1,0 +1,16 @@
+{extend name="inc/template"/}
+{block name="inbody"}
+<div class="x-body">
+    <div class="layui-form-item">
+        <button  class="layui-btn" onClick="javascript :history.back(-1);">
+            返回
+        </button>
+    </div>
+
+    <div class="layui-form-item">
+        <?php echo htmlspecialchars_decode($eject['videourl']); ?>
+    </div>
+
+
+</div>
+{/block}
